@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ValidateAI — Startup Validation</title>
+<style>
+:root{--bg:#f7f7fb;--surface:#fff;--surface2:#fbfbfe;--text:#171821;--muted:#737689;--line:#e9e9f1;--purple:#4f46e5;--purple2:#6d5dfc;--purpleSoft:#eeedff;--green:#16a36b;--greenSoft:#e8f8f1;--amber:#d38b1f;--amberSoft:#fff5df;--red:#dc4f5b;--redSoft:#fff0f1;--shadow:0 14px 40px rgba(38,33,84,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.hidden{display:none!important}
+.app-shell{min-height:100vh;display:flex}.sidebar{width:236px;background:#fff;border-right:1px solid var(--line);position:fixed;inset:0 auto 0 0;padding:25px 16px;z-index:20}.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:19px;padding:0 10px 28px}.brand-mark{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#6558f5,#4338ca);display:grid;place-items:center;color:#fff;font-size:15px}.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;text-align:left;padding:12px 11px;border-radius:11px;color:#77798b;font-weight:700;cursor:pointer}.nav button.active,.nav button:hover{background:var(--purpleSoft);color:var(--purple)}.nav-icon{width:24px;display:inline-block}.side-note{position:absolute;left:16px;right:16px;bottom:22px;background:#fafafe;border:1px solid var(--line);padding:13px;border-radius:12px;color:#8a8c9b;font-size:11px;line-height:1.5}
+.main{margin-left:236px;width:calc(100% - 236px);padding:28px 34px 70px}.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.crumb{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#9294a4;font-weight:800}.top-actions{display:flex;gap:9px}.ghost,.primary{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer;color:#55586a}.primary{border-color:var(--purple);background:var(--purple);color:#fff}.hero{max-width:860px;margin:48px auto 28px;text-align:center}.hero h1{font-size:clamp(40px,6vw,70px);line-height:1.02;letter-spacing:-3px;margin:0 0 14px}.hero h1 span{color:var(--purple)}.hero p{color:var(--muted);line-height:1.7;max-width:690px;margin:0 auto 26px}.idea-box{background:#fff;border:1px solid var(--line);border-radius:17px;padding:8px;display:flex;box-shadow:var(--shadow)}.idea-box input{flex:1;border:0;outline:0;padding:14px 15px;font-size:16px;min-width:0}.idea-box button{border:0;border-radius:12px;background:linear-gradient(135deg,var(--purple2),var(--purple));color:#fff;padding:0 22px;font-weight:900;cursor:pointer}.chips{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:12px}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 11px;color:#707385;font-size:12px;cursor:pointer}.loader{text-align:center;color:var(--purple);font-family:ui-monospace,monospace;font-size:12px;margin:18px}.status{text-align:center;font-size:12px;font-weight:800;color:var(--green);margin:10px}
+.dashboard{max-width:1200px;margin:auto}.report-head{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;margin:34px 0 17px}.report-head h2{font-size:26px;margin:5px 0}.report-head p{margin:0;color:var(--muted);font-size:13px}.badges{display:flex;gap:7px;flex-wrap:wrap}.badge{background:var(--purpleSoft);color:var(--purple);border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800}.badge.green{background:var(--greenSoft);color:var(--green)}.badge.amber{background:var(--amberSoft);color:var(--amber)}
+.overview{background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:var(--shadow)}.overview-top{display:grid;grid-template-columns:170px 1fr;gap:25px;align-items:center}.score-ring{width:132px;height:132px;border-radius:50%;background:conic-gradient(var(--purple) var(--score),#e8e8f2 0);display:grid;place-items:center;margin:auto;position:relative}.score-ring:after{content:"";width:101px;height:101px;background:#fff;border-radius:50%;position:absolute}.score-number{position:relative;z-index:1;font-size:33px;font-weight:950}.score-number small{font-size:12px;color:#8a8c9c;font-weight:800}.verdict{font-size:12px;color:var(--muted);line-height:1.7}.verdict strong{color:var(--text)}.assessment-title{display:flex;align-items:center;justify-content:space-between;margin:26px 0 14px}.assessment-title h3{margin:0;font-size:17px}.assessment-title span{color:var(--muted);font-size:12px}.score-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.metric{border:1px solid var(--line);border-radius:13px;padding:13px;background:#fff}.metric-top{display:flex;justify-content:space-between;font-size:11px;color:#747688}.metric-value{font-size:20px;font-weight:900;margin:7px 0}.bar{height:5px;background:#eeeef5;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),#8b7dff);border-radius:99px;width:0}
+.section-nav{display:flex;gap:8px;overflow:auto;margin:22px 0 13px}.section-nav button{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;color:#707385;font-weight:800;cursor:pointer}.section-nav button.active{background:var(--purple);color:#fff;border-color:var(--purple)}.section{display:none}.section.active{display:block}.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:19px;box-shadow:0 8px 24px rgba(38,33,84,.04)}.card h3{margin:0 0 10px;font-size:15px}.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);font-weight:900;margin:0 0 8px}.muted{color:var(--muted);line-height:1.6;font-size:13px}.list{padding-left:18px;margin:8px 0}.list li{margin:8px 0;font-size:13px;line-height:1.45}.risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.risk{border-radius:14px;padding:15px;background:#fff;border:1px solid var(--line)}.risk.high{border-top:4px solid var(--red)}.risk.medium{border-top:4px solid var(--amber)}.risk.low{border-top:4px solid var(--green)}.risk h4{margin:0 0 8px}.feature{padding:10px 0;border-top:1px solid var(--line)}.feature:first-child{border-top:0}.feature b{display:block;font-size:13px}.small{font-size:11px;color:var(--muted);line-height:1.45;margin-top:3px}.moscow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.moscow-col{background:#fafafe;border:1px solid var(--line);border-radius:14px;padding:14px}.moscow-col h4{margin:0 0 8px;font-size:13px}.tag{display:inline-block;background:var(--purpleSoft);color:var(--purple);padding:6px 9px;border-radius:8px;font-size:11px;font-weight:800;margin:3px}.channel{padding:11px;border:1px solid var(--line);border-radius:11px;margin:7px 0}.channel b{font-size:13px}.source{display:flex;align-items:baseline;gap:6px;color:var(--text);font-size:12px;text-decoration:none;padding:7px 0;border-top:1px solid var(--line)}.source:first-child{border-top:0}.source .src-domain{color:var(--purple);font-weight:700;flex-shrink:0}.source .src-num{color:var(--muted);font-size:10px;flex-shrink:0}.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;margin-right:5px}.pill.high{background:var(--greenSoft);color:var(--green)}.pill.medium{background:var(--amberSoft);color:var(--amber)}.pill.low{background:#eef0f7;color:#767a92}.metric-list p{margin:0 0 9px;font-size:12px}.metric-list p:last-child{margin-bottom:0}
+.actions-row{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}.download{background:var(--purple);color:#fff;border:0;border-radius:10px;padding:11px 15px;font-weight:900;cursor:pointer}.download:disabled{opacity:.6}
+.chat-fab{position:fixed;right:24px;bottom:24px;width:58px;height:58px;border:0;border-radius:18px;background:linear-gradient(135deg,#6558f5,#4338ca);color:#fff;box-shadow:0 15px 35px rgba(79,70,229,.35);font-size:21px;cursor:pointer;z-index:40}.chat-panel{position:fixed;right:24px;bottom:92px;width:365px;height:540px;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 25px 70px rgba(28,25,65,.22);z-index:39;display:none;overflow:hidden}.chat-panel.open{display:flex;flex-direction:column}.chat-head{padding:15px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}.bot-avatar{width:34px;height:34px;border-radius:11px;background:var(--purpleSoft);display:grid;place-items:center}.chat-head strong{font-size:13px}.online{display:block;color:var(--green);font-size:10px;margin-top:2px}.chat-close{margin-left:auto;border:0;background:transparent;font-size:20px;color:#777;cursor:pointer}.messages{flex:1;overflow:auto;padding:14px;background:#fcfcff}.msg{max-width:85%;padding:10px 12px;border-radius:13px;margin:7px 0;font-size:12px;line-height:1.5;white-space:pre-wrap}.msg.user{margin-left:auto;background:var(--purple);color:#fff}.msg.bot{background:#fff;border:1px solid var(--line)}.suggestions{padding:6px 12px;display:flex;gap:5px;flex-wrap:wrap}.suggestions button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 8px;font-size:10px;cursor:pointer}.chat-input{display:flex;gap:7px;padding:10px;border-top:1px solid var(--line)}.chat-input input{flex:1;border:1px solid var(--line);border-radius:11px;padding:10px;outline:0;font-size:12px}.chat-input button{border:0;width:40px;border-radius:11px;background:var(--purple);color:#fff;cursor:pointer}
+.empty{background:#fff;border:1px dashed #dcdce8;border-radius:18px;padding:42px;text-align:center;color:var(--muted)}
+@media(max-width:1000px){.score-grid{grid-template-columns:repeat(3,1fr)}.overview-top{grid-template-columns:1fr}.moscow{grid-template-columns:repeat(2,1fr)}.risk-grid{grid-template-columns:1fr}.sidebar{width:190px}.main{margin-left:190px;width:calc(100% - 190px)}}
+@media(max-width:700px){.sidebar{position:static;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--line)}.app-shell{display:block}.main{margin-left:0;width:100%;padding:20px 13px 80px}.side-note{display:none}.nav{grid-template-columns:1fr 1fr}.hero{margin-top:28px}.idea-box{flex-direction:column}.idea-box button{height:46px}.cards{grid-template-columns:1fr}.score-grid{grid-template-columns:repeat(2,1fr)}.moscow{grid-template-columns:1fr}.report-head{align-items:flex-start;flex-direction:column}.chat-panel{right:12px;bottom:82px;width:calc(100% - 24px);height:510px}.chat-fab{right:15px;bottom:15px}}
+</style>
+</head>
+<body>
+<div class="app-shell">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">✦</div>ValidateAI</div>
+  <div class="nav">
+    <button id="dashboardBtn"><span class="nav-icon">▦</span> Dashboard</button>
+    <button class="active" id="newValidationBtn"><span class="nav-icon">＋</span> New Validation</button>
+  </div>
+  <div class="side-note">Results are generated after a validation run. Start a new validation anytime to compare another startup idea.</div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div class="crumb">AI STARTUP VALIDATOR</div>
+    <div class="top-actions"><button class="ghost" id="downloadTop">↓ PDF Report</button></div>
+  </div>
+
+  <section id="landing" class="hero">
+    <div class="badge" style="display:inline-block">✦ Milestone 4 · AI Validation</div>
+    <h1>Validate the idea.<br><span>Plan the launch.</span></h1>
+    <p>Turn one startup idea into a research-backed validation report with market intelligence, SWOT & risk analysis, MVP prioritization, Go-To-Market strategy and an AI advisor.</p>
+    <form id="ideaForm" class="idea-box">
+      <input id="ideaInput" placeholder="e.g. AI tutor for engineering students" autocomplete="off" />
+      <button id="analyzeBtn">Run Full Validation →</button>
+    </form>
+    <div class="chips"><button class="chip" data-idea="AI tutor for engineering students">AI tutor</button><button class="chip" data-idea="Healthy meal delivery for college students">Student food</button><button class="chip" data-idea="AI resume builder for fresh graduates">AI resume builder</button></div>
+    <div id="loader" class="loader hidden">Running market → SWOT → MVP → GTM pipeline…</div>
+    <div id="status" class="status hidden"></div>
+  </section>
+
+  <section id="dashboard" class="dashboard hidden">
+    <div class="report-head">
+      <div><div class="crumb">VALIDATION REPORT</div><h2 id="ideaTitle">Startup idea</h2><p id="reportDate"></p></div>
+      <div class="badges"><span class="badge" id="verdictBadge">Validation</span><span class="badge green" id="demandBadge">Market demand</span><span class="badge" id="qualityBadge">Quality</span></div>
+    </div>
+
+    <div class="overview">
+      <div class="overview-top">
+        <div class="score-ring" id="scoreRing" style="--score:75%"><div class="score-number"><span id="overallScore">75</span><small>/100</small></div></div>
+        <div><div class="eyebrow">Overall Score</div><h3 id="verdictTitle" style="font-size:22px;margin:0 0 7px">Promising but Competitive</h3><p class="verdict" id="verdictText"></p><div class="actions-row"><button class="download" id="downloadReport">↓ Download Validation PDF</button></div></div>
+      </div>
+      <div class="assessment-title"><h3>6-Dimensional Score Breakdown</h3><span>Weighted assessment across strategic dimensions</span></div>
+      <div class="score-grid">
+        <div class="metric"><div class="metric-top"><span>Innovation</span><span id="mInnovation">—</span></div><div class="metric-value" id="mvInnovation">—</div><div class="bar"><i id="bInnovation"></i></div></div>
+        <div class="metric"><div class="metric-top"><span>Market Demand</span><span id="mDemand">—</span></div><div class="metric-value" id="mvDemand">—</div><div class="bar"><i id="bDemand"></i></div></div>
+        <div class="metric"><div class="metric-top"><span>Competition</span><span id="mCompetition">—</span></div><div class="metric-value" id="mvCompetition">—</div><div class="bar"><i id="bCompetition"></i></div></div>
+        <div class="metric"><div class="metric-top"><span>Feasibility</span><span id="mFeasibility">—</span></div><div class="metric-value" id="mvFeasibility">—</div><div class="bar"><i id="bFeasibility"></i></div></div>
+        <div class="metric"><div class="metric-top"><span>Risk</span><span id="mRisk">—</span></div><div class="metric-value" id="mvRisk">—</div><div class="bar"><i id="bRisk"></i></div></div>
+        <div class="metric"><div class="metric-top"><span>GTM</span><span id="mGtm">—</span></div><div class="metric-value" id="mvGtm">—</div><div class="bar"><i id="bGtm"></i></div></div>
+      </div>
+    </div>
+
+    <div class="section-nav">
+      <button class="section-btn active" data-section="summary">Overview</button><button class="section-btn" data-section="market">Market</button><button class="section-btn" data-section="swot">SWOT & Risk</button><button class="section-btn" data-section="mvp">MVP / MoSCoW</button><button class="section-btn" data-section="gtm">Go-To-Market</button>
+    </div>
+
+    <div id="summary" class="section active">
+      <div class="cards">
+        <div class="card"><div class="eyebrow">Market Intelligence</div><h3>Demand & Market</h3><div id="summaryMarket" class="muted"></div></div>
+        <div class="card"><div class="eyebrow">Competitive Landscape</div><h3>Real Competitors</h3><div id="summaryCompetitors"></div></div>
+        <div class="card"><div class="eyebrow">Recommended MVP</div><h3>Build the smallest valuable product</h3><div id="summaryMvp" class="muted"></div></div>
+        <div class="card"><div class="eyebrow">Launch Strategy</div><h3>First 100 → 1,000 customers</h3><div id="summaryGtm" class="muted"></div></div>
+      </div>
+    </div>
+
+    <div id="market" class="section">
+      <div class="cards"><div class="card"><div class="eyebrow">Market Size</div><h3>Market & Growth</h3><div id="marketSize" class="muted"></div></div><div class="card"><div class="eyebrow">Verified Sources</div><h3>Research evidence</h3><div id="sources"></div></div></div>
+      <div class="card" style="margin-top:14px"><div class="eyebrow">Competitors</div><h3>Named companies found by research</h3><div id="competitors"></div></div>
+    </div>
+
+    <div id="swot" class="section">
+      <div class="cards"><div class="card"><div class="eyebrow">Strengths</div><ul id="strengths" class="list"></ul></div><div class="card"><div class="eyebrow">Weaknesses</div><ul id="weaknesses" class="list"></ul></div><div class="card"><div class="eyebrow">Opportunities</div><ul id="opportunities" class="list"></ul></div><div class="card"><div class="eyebrow">Threats</div><ul id="threats" class="list"></ul></div></div>
+      <div class="card" style="margin-top:14px"><div class="eyebrow">Risk Analysis</div><div id="risks" class="risk-grid"></div></div>
+    </div>
+
+    <div id="mvp" class="section">
+      <div class="card"><div class="eyebrow">MoSCoW Prioritization</div><div id="moscow" class="moscow"></div></div>
+      <div class="cards" style="margin-top:14px"><div class="card"><div class="eyebrow">Tech Stack</div><div id="tech" class="muted"></div></div><div class="card"><div class="eyebrow">Timeline & Resources</div><div id="timeline" class="muted"></div><div id="resources" class="muted"></div></div><div class="card"><div class="eyebrow">Success Metrics</div><ul id="successMetrics" class="list"></ul></div></div>
+    </div>
+
+    <div id="gtm" class="section">
+      <div class="cards"><div class="card"><div class="eyebrow">Positioning</div><div id="positioning" class="muted"></div></div><div class="card"><div class="eyebrow">Pricing</div><div id="pricing" class="muted"></div></div><div class="card"><div class="eyebrow">Primary Channels</div><div id="primaryChannels"></div></div><div class="card"><div class="eyebrow">Secondary Channels</div><div id="secondaryChannels"></div></div></div>
+      <div class="cards" style="margin-top:14px"><div class="card"><div class="eyebrow">Customer Acquisition</div><div id="acquisition" class="muted"></div></div><div class="card"><div class="eyebrow">Launch Plan</div><div id="launch" class="muted"></div></div><div class="card"><div class="eyebrow">Growth Metrics</div><div id="growth" class="muted metric-list"></div></div></div>
+      <div class="card" style="margin-top:14px"><div class="eyebrow">Key Partnerships</div><div id="partnerships"></div></div>
+    </div>
+  </section>
+</main>
+</div>
+
+<button class="chat-fab" id="chatFab" aria-label="Open advisor">✦</button>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head"><div class="bot-avatar">♙</div><div><strong>ValidateBuddy</strong><span class="online">● Online · Startup Validation Assistant</span></div><button class="chat-close" id="chatClose">×</button></div>
+  <div class="messages" id="messages"><div class="msg bot">Hi! I'm your startup validation advisor. Run a validation first, then ask me about pricing, risks, MVP features, competitors or your first customers.</div></div>
+  <div class="suggestions" id="suggestions"></div>
+  <div class="chat-input"><input id="chatInput" placeholder="Ask about your startup validation…" /><button id="chatSend">➤</button></div>
+</div>
+
+<script>
+let validationData=null,history=[];
+const $=id=>document.getElementById(id);const arr=v=>Array.isArray(v)?v:[];const obj=v=>v&&typeof v==='object'?v:{};const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const titleCase=k=>String(k||'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+const pill=(label,v,kind)=>{const t=String(v||'').toLowerCase();let cls;if(kind==='effort'){cls=t==='high'?'medium':t==='low'?'high':'medium'}else{cls=t==='high'?'high':t==='low'?'low':'medium'}return `<span class="pill ${cls}">${esc(label)}: ${esc(v)}</span>`};
+function domainOf(u){try{return new URL(u).hostname.replace(/^www\./,'')}catch(_){return u}}
+function pct(v){let n=parseFloat(String(v||'0').replace('%',''));return Number.isFinite(n)?Math.max(0,Math.min(100,n)):0}
+function tags(id,items){$(id).innerHTML=arr(items).map(x=>`<span class="tag">${esc(x)}</span>`).join('')||'<span class="muted">No data returned.</span>'}
+function list(id,items){$(id).innerHTML=arr(items).map(x=>`<li>${esc(x)}</li>`).join('')||'<li>No data returned.</li>'}
+function setMetric(key,value){const n=Math.round(value);$(`m${key[0].toUpperCase()+key.slice(1)}`).textContent=n;$(`mv${key[0].toUpperCase()+key.slice(1)}`).textContent=n;$(`b${key[0].toUpperCase()+key.slice(1)}`).style.width=n+'%'}
+function deriveScores(d){
+ const market=obj(d.market_validation), sw=obj(d.swot_analysis), mvp=obj(d.mvp_features), gtm=obj(d.gtm_strategy);
+ const demandText=String(obj(sw.market_demand_prediction).demand_level||'medium').toLowerCase();const demandMap={"very high":95,high:85,medium:68,low:45};const demand=demandMap[demandText]||65;
+ const conf=pct(market.confidence_score);const cr=obj(sw.competitor_risk);const diff=pct(String(cr.differentiation_score||'6/10').split('/')[0])*10;const saturation=String(cr.market_saturation||'medium').toLowerCase();const comp=100-(saturation==='high'?78:saturation==='low'?28:52)+diff*.22;
+ const must=arr(obj(mvp.moscow_framework).must_have).length;const feasibility=Math.min(92,55+must*7+(obj(mvp.resource_requirements).team_size?8:0));
+ const risk=parseFloat(String(sw.overall_risk_score||'5').split('/')[0])||5;const riskScore=Math.max(15,100-risk*8.5);
+ const gtmScore=(obj(gtm.positioning).value_proposition?30:0)+(arr(obj(gtm.channels).primary).length*12)+(obj(gtm.customer_acquisition).first_100_customers?25:0)+(obj(gtm.pricing_strategy).model?20:0); 
+ const innovation=Math.max(45,Math.min(95,(conf*.35)+(diff*.45)+(must?20:0)));
+ const scores={innovation, demand, competition:Math.max(30,Math.min(95,comp)), feasibility, risk:riskScore, gtm:Math.min(95,gtmScore)};
+ const overall=Math.round(scores.innovation*.16+scores.demand*.22+scores.competition*.17+scores.feasibility*.15+scores.risk*.15+scores.gtm*.15);
+ return {scores,overall};
+}
+function renderDashboard(d){
+ const market=obj(d.market_validation),sw=obj(d.swot_analysis),mvp=obj(d.mvp_features),gtm=obj(d.gtm_strategy);const {scores,overall}=deriveScores(d);
+ $('ideaTitle').textContent=d.startup_idea;$('reportDate').textContent='Generated '+new Date().toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+ $('overallScore').textContent=overall;$('scoreRing').style.setProperty('--score',overall+'%');
+ const verdict=overall>=80?'Strong Validation':overall>=65?'Promising but Competitive':overall>=50?'Needs Validation':'High Risk';$('verdictTitle').textContent=verdict;$('verdictBadge').textContent=verdict;
+ const demand=obj(sw.market_demand_prediction);$('demandBadge').textContent=(demand.demand_level||'Market demand');$('demandBadge').className='badge '+((String(demand.demand_level||'').toLowerCase().includes('high'))?'green':'amber');
+ ['innovation','demand','competition','feasibility','risk','gtm'].forEach(k=>setMetric(k,scores[k]));
+ const q=$('qualityBadge');q.textContent='Quality pending';
+ $('verdictText').innerHTML=`This score combines market evidence, demand, competitive differentiation, MVP feasibility, risk exposure and GTM readiness. <strong>${esc(obj(sw).summary||'Review the detailed assessment below before making an investment or launch decision.')}</strong>`;
+ $('summaryMarket').innerHTML=`<b>${esc(market.market_size||'Market size not explicitly returned.')}</b><p>Demand: ${esc(demand.demand_level||'—')} · Trajectory: ${esc(demand.growth_trajectory||'—')}</p>`;
+ tags('summaryCompetitors',market.real_competitors||obj(sw.competitor_risk).top_competitors);$('summaryMvp').textContent=mvp.mvp_summary||'MoSCoW recommendations are available in the MVP section.';$('summaryGtm').textContent=obj(gtm.customer_acquisition).first_100_customers||gtm.gtm_summary||'GTM recommendations are available in the Go-To-Market section.';
+ $('marketSize').textContent=market.market_size||'No explicit market size data found.';tags('competitors',market.real_competitors);
+ const s=$('sources');s.innerHTML=arr(market.verified_sources).map((u,i)=>`<a class="source" href="${esc(u)}" target="_blank" rel="noopener"><span class="src-num">[${i+1}]</span><span class="src-domain">${esc(domainOf(u))}</span></a>`).join('')||'<span class="muted">No source references returned.</span>';
+ list('strengths',obj(sw.swot).strengths);list('weaknesses',obj(sw.swot).weaknesses);list('opportunities',obj(sw.swot).opportunities);list('threats',obj(sw.swot).threats);
+ const r=obj(sw.risk_analysis);$('risks').innerHTML=[['high_risks','High Risk','high'],['medium_risks','Medium Risk','medium'],['low_risks','Low Risk','low']].map(([k,t,c])=>`<div class="risk ${c}"><h4>${t}</h4>${arr(r[k]).map(x=>`<div class="feature"><b>${esc(x.risk)}</b><div class="small">${esc(x.description)}</div><div class="small"><strong>Mitigation:</strong> ${esc(x.mitigation)}</div></div>`).join('')||'<div class="small">No risks returned.</div>'}</div>`).join('');
+ const mm=obj(mvp.moscow_framework);$('moscow').innerHTML=[['must_have','Must Have'],['should_have','Should Have'],['could_have','Could Have'],['wont_have',"Won't Have"]].map(([k,t])=>`<div class="moscow-col"><h4>${t}</h4>${arr(mm[k]).map(x=>`<div class="feature"><b>${esc(x.feature)}</b><div class="small">${esc(x.reason)}</div>${x.effort?`<div class="small" style="margin-top:6px">${pill('Effort',x.effort,'effort')}${pill('Impact',x.impact,'impact')}</div>`:''}</div>`).join('')||'<div class="small">No features returned.</div>'}</div>`).join('');
+ const ts=obj(mvp.tech_stack_recommendation);$('tech').innerHTML=`<p><b>Frontend:</b> ${esc(ts.frontend)}</p><p><b>Backend:</b> ${esc(ts.backend)}</p><p><b>Database:</b> ${esc(ts.database)}</p><p><b>AI/ML:</b> ${esc(ts.ai_ml)}</p><p><b>Deployment:</b> ${esc(ts.deployment)}</p>`;
+ $('timeline').innerHTML=Object.entries(obj(mvp.mvp_timeline)).map(([k,v])=>`<p><b>${esc(titleCase(k))}:</b> ${esc(v.duration)} — ${esc(v.focus)}</p>`).join('');const rr=obj(mvp.resource_requirements);$('resources').innerHTML=`<p><b>Team:</b> ${esc(rr.team_size)} · <b>Budget:</b> ${esc(rr.budget_estimate)}</p><p>${arr(rr.key_roles).join(' · ')}</p>`;
+ list('successMetrics',mvp.success_metrics);
+ const p=obj(gtm.positioning);$('positioning').innerHTML=`<p><b>Value proposition:</b> ${esc(p.value_proposition)}</p><p><b>Target:</b> ${esc(p.target_segment)}</p><p><b>Differentiator:</b> ${esc(p.unique_differentiator)}</p><p><b>Positioning:</b> ${esc(p.positioning_statement)}</p>`;
+ const pr=obj(gtm.pricing_strategy);$('pricing').innerHTML=`<p><b>Model:</b> ${esc(pr.model)}</p>${arr(pr.tiers).map(x=>`<div class="feature"><b>${esc(x.name)} — ${esc(x.price)}</b><div class="small">${arr(x.features).join(', ')}</div></div>`).join('')}<p>${esc(pr.reasoning)}</p>`;
+ const ch=obj(gtm.channels);$('primaryChannels').innerHTML=arr(ch.primary).map(x=>`<div class="channel"><b>${esc(x.channel)}</b><div class="small">${esc(x.strategy)}</div><div class="small">Cost: ${esc(x.cost)} · Reach: ${esc(x.expected_reach||'—')}</div></div>`).join('')||'<span class="muted">No channels returned.</span>';
+ $('secondaryChannels').innerHTML=arr(ch.secondary).map(x=>`<div class="channel"><b>${esc(x.channel)}</b><div class="small">${esc(x.strategy)}</div><div class="small">Cost: ${esc(x.cost)}</div></div>`).join('')||'<span class="muted">No secondary channels returned.</span>';
+ const ac=obj(gtm.customer_acquisition);$('acquisition').innerHTML=`<p><b>First 100:</b> ${esc(ac.first_100_customers)}</p><p><b>First 1,000:</b> ${esc(ac.first_1000_customers)}</p><p><b>CAC:</b> ${esc(ac.customer_acquisition_cost)} · <b>LTV:</b> ${esc(ac.lifetime_value_estimate)}</p>`;
+ const lp=obj(gtm.launch_plan);$('launch').innerHTML=Object.entries(lp).map(([k,v])=>`<p><b>${esc(titleCase(k))}</b> ${esc(v.duration||'')}<br>${arr(v.activities).join(' · ')}</p>`).join('');const gm=obj(gtm.growth_metrics);$('growth').innerHTML=Object.entries(gm).map(([k,v])=>`<p><b>${esc(titleCase(k))}:</b> ${esc(v)}</p>`).join('');
+ tags('partnerships',gtm.key_partnerships);
+}
+function setNavActive(id){document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));$(id).classList.add('active')}
+function setSectionActive(section){document.querySelectorAll('.section-btn').forEach(b=>b.classList.toggle('active',b.dataset.section===section));document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===section))}
+function openDashboard(){ $('landing').classList.add('hidden');$('dashboard').classList.remove('hidden');setNavActive('dashboardBtn'); }
+function openLanding(){ $('dashboard').classList.add('hidden');$('landing').classList.remove('hidden');$('ideaInput').focus();setNavActive('newValidationBtn'); }
+async function validate(idea){
+ $('loader').classList.remove('hidden');$('status').classList.add('hidden');$('analyzeBtn').disabled=true;
+ try{const r=await fetch('/api/validate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idea})});const data=await r.json();if(!r.ok)throw new Error(data.detail||'Validation failed');validationData=data;history=[];renderDashboard(data);setSectionActive('summary');openDashboard();$('status').textContent='✓ Validation complete — your report and advisor are ready.';$('status').classList.remove('hidden');try{const q=await fetch('/api/quality-check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const qd=await q.json();$('qualityBadge').textContent=`Quality ${qd.accuracy_score}%`}catch(_){$('qualityBadge').textContent='Quality check unavailable'} addMessage('bot',`Validation complete for “${idea}”. Ask me anything about the result.`);renderSuggestions(['Recommend a pricing model','Which risk should we mitigate first?','What should our first 100 customers be?']);}catch(e){alert(e.message)}finally{$('loader').classList.add('hidden');$('analyzeBtn').disabled=false}}
+$('ideaForm').addEventListener('submit',e=>{e.preventDefault();const idea=$('ideaInput').value.trim();if(idea)validate(idea)});document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{$('ideaInput').value=c.dataset.idea;validate(c.dataset.idea)});$('newValidationBtn').onclick=openLanding;$('dashboardBtn').onclick=()=>validationData?openDashboard():openLanding;
+ document.querySelectorAll('.section-btn').forEach(b=>b.onclick=()=>setSectionActive(b.dataset.section));
+async function downloadPdf(){if(!validationData){alert('Run a validation first.');return}const btn=$('downloadReport');btn.disabled=true;btn.textContent='Generating PDF…';try{const r=await fetch('/api/report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(validationData)});if(!r.ok){const x=await r.json().catch(()=>({}));throw new Error(x.detail||'Report generation failed')}const blob=await r.blob();const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download='startup-validation-report.pdf';a.click();URL.revokeObjectURL(u)}catch(e){alert(e.message)}finally{btn.disabled=false;btn.textContent='↓ Download Validation PDF'}}
+$('downloadReport').onclick=downloadPdf;$('downloadTop').onclick=downloadPdf;
+const chatPanel=$('chatPanel');$('chatFab').onclick=()=>chatPanel.classList.toggle('open');$('chatClose').onclick=()=>chatPanel.classList.remove('open');
+function addMessage(role,text){const d=document.createElement('div');d.className='msg '+(role==='user'?'user':'bot');d.textContent=text;$('messages').appendChild(d);$('messages').scrollTop=$('messages').scrollHeight}
+function renderSuggestions(items){$('suggestions').innerHTML=arr(items).map(q=>`<button data-q="${esc(q)}">${esc(q)}</button>`).join('');document.querySelectorAll('#suggestions button').forEach(b=>b.onclick=()=>{$('chatInput').value=b.dataset.q;sendChat()})}
+async function sendChat(){const input=$('chatInput'),q=input.value.trim();if(!q)return;if(!validationData){addMessage('bot','Please run a startup validation first so I can use your market, SWOT, MVP and GTM results.');return}addMessage('user',q);input.value='';history.push({role:'user',content:q});$('chatSend').disabled=true;try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q,startup_idea:validationData.startup_idea,conversation_history:history})});const d=await r.json();if(!r.ok)throw new Error(d.detail||'Chat failed');addMessage('bot',d.answer||'No answer returned.');history.push({role:'assistant',content:d.answer||''});renderSuggestions(d.follow_up_suggestions)}catch(e){addMessage('bot','I could not answer that right now: '+e.message)}finally{$('chatSend').disabled=false}}
+$('chatSend').onclick=sendChat;$('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat()});
+</script>
+</body>
+</html>

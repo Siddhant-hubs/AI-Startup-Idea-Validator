@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+requests
+python-dotenv
+pydantic
+crewai
+crewai-tools
+chromadb
+langchain-openai
+reportlab
+pytest
+httpx
