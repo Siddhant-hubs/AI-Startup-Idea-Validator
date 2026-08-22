@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: ai-startup-idea-validator
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: CREWAI_MODEL
+        value: openrouter/openai/gpt-4o-mini
